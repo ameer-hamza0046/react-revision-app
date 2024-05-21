@@ -1,30 +1,28 @@
 import { getAuth } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { app } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import NavigationBar from "../components/NavigationBar";
+import { Button } from "react-bootstrap";
+import { toastOptions } from "../config";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const navigate = useNavigate();
   const auth = getAuth(app);
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      navigate("/");
-    }
-  });
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        navigate("/");
+        toast.info("Login to continue...", toastOptions);
+      }
+    });
+  }, []);
   return (
-    <div>
-      Home
-      <button
-        onClick={() =>
-          auth
-            .signOut()
-            .then((res) => navigate("/"))
-            .catch((err) => alert(err.message))
-        }
-      >
-        Sign Out
-      </button>
-    </div>
+    <>
+      <NavigationBar />
+      <Button onClick={() => auth.signOut()}>Sign Out</Button>
+    </>
   );
 };
 

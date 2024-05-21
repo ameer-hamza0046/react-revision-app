@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Tabs, Tab, Form, Button } from "react-bootstrap";
 import {
   getAuth,
@@ -9,17 +9,19 @@ import { collection, addDoc } from "firebase/firestore";
 import { app, db } from "./firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { toastOptions } from "./components/config";
+import { toastOptions } from "./config";
 
 const Landing = () => {
   const navigate = useNavigate();
   const auth = getAuth(app);
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      navigate("/home");
-      toast.success("Logged In", toastOptions);
-    }
-  });
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigate("/home");
+        toast.success("Logged In", toastOptions);
+      }
+    });
+  }, []);
   return (
     <Container className="my-center">
       <h1>Revision App</h1>
@@ -44,6 +46,7 @@ function SignIn() {
   //
   const handleSignIn = (e) => {
     e.preventDefault();
+    toast.info("Please wait...", toastOptions);
     signInWithEmailAndPassword(auth, data.email, data.password).catch((err) =>
       toast.error(err.message, toastOptions)
     );
@@ -92,6 +95,7 @@ function SignUp() {
       toast.error("Password not matching with Confirm-Password");
       return;
     }
+    toast.info("Please wait...", toastOptions);
     createUserWithEmailAndPassword(auth, data.email, data.setPassword)
       .then((res) => {
         console.log(res);
