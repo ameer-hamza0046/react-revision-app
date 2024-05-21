@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { toastOptions } from "./config";
 
+// landing page contains a tabbed interface for login and signup
 const Landing = () => {
   const navigate = useNavigate();
   const auth = getAuth(app);
@@ -39,6 +40,7 @@ const Landing = () => {
   );
 };
 
+// sign in using firebase
 function SignIn() {
   const [data, setData] = useState({ email: "", password: "" });
   //
@@ -79,6 +81,7 @@ function SignIn() {
   );
 }
 
+// sign up using firebase
 function SignUp() {
   const [data, setData] = useState({
     name: "",

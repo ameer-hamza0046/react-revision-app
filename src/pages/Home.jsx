@@ -21,7 +21,6 @@ const Home = () => {
   return (
     <>
       <NavigationBar />
-      <Button onClick={() => auth.signOut()}>Sign Out</Button>
     </>
   );
 };
