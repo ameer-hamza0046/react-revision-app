@@ -98,6 +98,7 @@ const AddEntry = () => {
       return;
     }
     toast.info("Please wait...", toastOptions);
+    // first update the nextRevisionId for this user
     // for each revision interval
     // add a document in the collection if checkbox is true
     updateDoc(userSnapshot.ref, { nextRevisionId: increment(1) })
@@ -107,7 +108,8 @@ const AddEntry = () => {
             addDoc(collection(db, "revisions"), {
               // userDetails: email
               userEmail: auth.currentUser.email,
-              // revisionDetails: subject, topic, dateCreated, note, dateRevision, revisionId
+              // revisionDetails: subject, topic, dateCreated, note,
+              // dateRevision, revisionIteration, revisionId
               subject: data.subject,
               topic: data.topic,
               dateCreated: new Date(data.date),
