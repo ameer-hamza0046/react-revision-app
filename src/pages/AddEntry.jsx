@@ -18,10 +18,12 @@ import { toast } from "react-toastify";
 import { toastOptions } from "../config";
 
 const AddEntry = () => {
+  console.log("hello");
   // 1. check if the user is logged in or logged out?
   // if authentication fails then navigate him to the login page
   const navigate = useNavigate();
   const auth = getAuth(app);
+  console.log(auth.currentUser);
 
   // load the current user's Document to get the nextRevisionId
   const [userSnapshot, setUserSnapshot] = useState({});
@@ -40,14 +42,15 @@ const AddEntry = () => {
           where("email", "==", user.email)
         );
         // used getDocs instead of getDoc to be able to use "where email == user.email"
-        getDocs(q).then((docSnapshot) => {
-          // forEach is useless, since there is only one doc here
-          // since email id is unique
-          docSnapshot.forEach((doc) => {
-            setUserSnapshot(doc);
+        getDocs(q)
+          .then((docSnapshot) => {
+            // there is only 1 result in the query
+            setUserSnapshot(docSnapshot.docs[0]);
             setLoading(false);
+          })
+          .catch((err) => {
+            toast.error("No such user exists!", toastOptions);
           });
-        });
       }
     });
   }, []);
