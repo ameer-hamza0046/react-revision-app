@@ -19,17 +19,13 @@ import { toastOptions } from "../config";
 
 const AddEntry = () => {
   // 1. check if the user is logged in or logged out?
-  console.log("hello vercel")
   // if authentication fails then navigate him to the login page
   const navigate = useNavigate();
   const auth = getAuth(app);
-  console.log(auth)
 
   // load the current user's Document to get the nextRevisionId
   const [userSnapshot, setUserSnapshot] = useState({});
   const [loading, setLoading] = useState(true);
-  console.log(userSnapshot)
-  console.log(loading)
 
   useEffect(() => {
     // authentication check
@@ -76,7 +72,6 @@ const AddEntry = () => {
       { day: 167, check: true },
     ],
   };
-  console.log(initialData)
 
   // the state of the form fields
   const [data, setData] = useState(initialData);
