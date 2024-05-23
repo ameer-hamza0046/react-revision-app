@@ -104,7 +104,7 @@ function SignUp() {
         console.log(res);
         addDoc(collection(db, "users"), {
           name: data.name,
-          email: data.email,
+          email: data.email.toLowerCase(),
           nextRevisionId: 0,
         }).catch((err) => toast.error(err.message, toastOptions));
         toast.success("Signed up successfully!", toastOptions);

@@ -17,12 +17,12 @@ import Item from "../components/Item";
 import MySpinner from "../components/MySpinner";
 
 const Home = () => {
+  console.log("updated 23-05-2024 15:35");
   const navigate = useNavigate();
   const auth = getAuth(app);
   const todayDate = new Date(new Date().toLocaleDateString("en-CA"));
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(items);
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
@@ -40,8 +40,8 @@ const Home = () => {
             arr.push(doc.data());
           });
           setItems(arr);
+          setLoading(false);
         });
-        setLoading(false);
       }
     });
   }, []);

@@ -18,12 +18,10 @@ import { toast } from "react-toastify";
 import { toastOptions } from "../config";
 
 const AddEntry = () => {
-  console.log("hello");
   // 1. check if the user is logged in or logged out?
   // if authentication fails then navigate him to the login page
   const navigate = useNavigate();
   const auth = getAuth(app);
-  console.log(auth.currentUser);
 
   // load the current user's Document to get the nextRevisionId
   const [userSnapshot, setUserSnapshot] = useState({});
