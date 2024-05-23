@@ -98,6 +98,7 @@ const AddEntry = () => {
       toast.error("At least one revision day must be selected.", toastOptions);
       return;
     }
+    setLoading(true);
     toast.info("Please wait...", toastOptions);
     // first update the nextRevisionId for this user
     // for each revision interval
@@ -129,6 +130,7 @@ const AddEntry = () => {
                   toastOptions
                 );
                 setData(initialData);
+                setLoading(false);
               })
               .catch((err) => toast.error(err.message, toastOptions));
           }
