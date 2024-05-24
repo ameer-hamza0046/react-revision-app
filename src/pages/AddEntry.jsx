@@ -81,7 +81,7 @@ const AddEntry = () => {
   const [data, setData] = useState(initialData);
 
   // handle the submit of the form
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // subject, topic and note cannot be empty
     // date and interval are already there by default
@@ -106,40 +106,41 @@ const AddEntry = () => {
     // first update the nextRevisionId for this user
     // for each revision interval
     // add a document in the collection if checkbox is true
-    updateDoc(userSnapshot.ref, { nextRevisionId: increment(1) })
-      .then(() => {
-        data.intervals.forEach(({ day, check }, index) => {
-          if (check) {
-            addDoc(collection(db, "revisions"), {
-              // userDetails: email
-              userEmail: auth.currentUser.email,
-              // revisionDetails: subject, topic, dateCreated, note,
-              // dateRevision, revisionIteration, revisionId
-              subject: data.subject,
-              topic: data.topic,
-              dateCreated: new Date(data.date),
-              note: data.note,
-              dateRevision: new Date(
-                new Date(data.date).getTime() + day * 24 * 60 * 60 * 1000
-              ),
-              revisionIteration: index + 1,
-              revisionId: userSnapshot.data().nextRevisionId,
-            })
-              .then(() => {
-                toast.success(
-                  `Added revision-${index + 1} after ${day} day${
-                    day > 1 ? "s" : ""
-                  }.`,
-                  toastOptions
-                );
-                setData(initialData);
-                setLoading(false);
-              })
-              .catch((err) => toast.error(err.message, toastOptions));
-          }
-        });
-      })
-      .catch((err) => toast.error(err.message, toastOptions));
+    try {
+      await updateDoc(userSnapshot.ref, { nextRevisionId: increment(1) });
+    } catch (err) {
+      toast.error(err.message, toastOptions);
+    }
+    data.intervals.forEach(async ({ day, check }, index) => {
+      if (check) {
+        try {
+          await addDoc(collection(db, "users", userSnapshot.id, "revisions"), {
+            // userDetails: email
+            userEmail: auth.currentUser.email,
+            // revisionDetails: subject, topic, dateCreated, note,
+            // dateRevision, revisionIteration, revisionId
+            subject: data.subject,
+            topic: data.topic,
+            dateCreated: new Date(data.date),
+            note: data.note,
+            dateRevision: new Date(
+              new Date(data.date).getTime() + day * 24 * 60 * 60 * 1000
+            ),
+            completed: false,
+            revisionIteration: index + 1,
+            revisionId: userSnapshot.data().nextRevisionId,
+          });
+        } catch (err) {
+          toast.error(err.message, toastOptions);
+        }
+        toast.success(
+          `Added revision-${index + 1} after ${day} day${day > 1 ? "s" : ""}.`,
+          toastOptions
+        );
+        setData(initialData);
+        setLoading(false);
+      }
+    });
   };
   return (
     <>
