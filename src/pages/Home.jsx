@@ -17,17 +17,17 @@ import Item from "../components/Item";
 import MySpinner from "../components/MySpinner";
 
 const Home = () => {
-  console.log("updated 24-05-2024 20:50");
-
+  
   const navigate = useNavigate();
   const auth = getAuth(app);
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
   const todayDate = new Date(new Date().toLocaleDateString("en-CA"));
-
+  
   useEffect(() => {
+    console.log("updated 24-05-2024 20:50");
     auth.onAuthStateChanged((user) => {
       if (!user) {
         navigate("/");
