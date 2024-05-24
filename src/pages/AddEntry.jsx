@@ -43,11 +43,14 @@ const AddEntry = () => {
         getDocs(q)
           .then((docSnapshot) => {
             // there is only 1 result in the query
+            if (docSnapshot.docs.length === 0) {
+              throw "No such user exists!";
+            }
             setUserSnapshot(docSnapshot.docs[0]);
             setLoading(false);
           })
           .catch((err) => {
-            toast.error("No such user exists!", toastOptions);
+            toast.error(err.message, toastOptions);
           });
       }
     });
