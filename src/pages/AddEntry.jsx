@@ -115,8 +115,6 @@ const AddEntry = () => {
       if (check) {
         try {
           await addDoc(collection(db, "users", userSnapshot.id, "revisions"), {
-            // userDetails: email
-            userEmail: auth.currentUser.email,
             // revisionDetails: subject, topic, dateCreated, note,
             // dateRevision, revisionIteration, revisionId
             subject: data.subject,

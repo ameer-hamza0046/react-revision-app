@@ -1,7 +1,6 @@
 import React from "react";
 
 const Item = ({ item }) => {
-  console.log(item.dateCreated);
   return (
     <div className="m-3 p-2 border border-dark">
       <div>Iteration: {item.revisionIteration}</div>
