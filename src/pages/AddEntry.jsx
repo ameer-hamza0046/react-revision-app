@@ -111,34 +111,46 @@ const AddEntry = () => {
     } catch (err) {
       toast.error(err.message, toastOptions);
     }
-    data.intervals.forEach(async ({ day, check }, index) => {
-      if (check) {
-        try {
-          await addDoc(collection(db, "users", userSnapshot.id, "revisions"), {
-            // revisionDetails: subject, topic, dateCreated, note,
-            // dateRevision, revisionIteration, revisionId
-            subject: data.subject,
-            topic: data.topic,
-            dateCreated: new Date(data.date),
-            note: data.note,
-            dateRevision: new Date(
-              new Date(data.date).getTime() + day * 24 * 60 * 60 * 1000
-            ),
-            completed: false,
-            revisionIteration: index + 1,
-            revisionId: userSnapshot.data().nextRevisionId,
-          });
-        } catch (err) {
-          toast.error(err.message, toastOptions);
-        }
-        toast.success(
-          `Added revision-${index + 1} after ${day} day${day > 1 ? "s" : ""}.`,
-          toastOptions
-        );
-        setData(initialData);
-        setLoading(false);
-      }
-    });
+
+    // list of days of checked intervals
+    const intervals = data.intervals
+      .filter(({ check }) => check)
+      .map(({ day }) => day);
+
+    // document to be added in the collection
+    const revisionDoc = {
+      subject: data.subject,
+      topic: data.topic,
+      // dateCreated is stored as a string in yyyy-mm-dd format
+      dateCreated: data.date,
+      note: data.note,
+      // dateRevisions is an array with each element as as a string in yyyy-mm-dd format
+      dateRevisions: intervals.map((day) =>
+        new Date(
+          new Date(data.date).getTime() + day * 24 * 60 * 60 * 1000
+        ).toLocaleDateString("en-CA")
+      ),
+      // date expiry is a Date object that expires after 10 days of the last revision
+      dateExpiry: new Date(
+        new Date(data.date).getTime() +
+          (intervals[intervals.length - 1] + 10) * 24 * 60 * 60 * 1000
+      ),
+      // tracks whether the user has completed this event or not?
+      completed: intervals.map(() => false),
+      // id of the revision
+      revisionId: userSnapshot.data().nextRevisionId,
+    };
+    try {
+      await addDoc(
+        collection(db, "users", userSnapshot.id, "revisions"),
+        revisionDoc
+      );
+    } catch (err) {
+      toast.error(err.message, toastOptions);
+    }
+    toast.success("Added revision successfully!", toastOptions);
+    setLoading(false);
+    setData(initialData);
   };
   return (
     <>
