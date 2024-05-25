@@ -17,17 +17,16 @@ import Item from "../components/Item";
 import MySpinner from "../components/MySpinner";
 
 const Home = () => {
-  
   const navigate = useNavigate();
   const auth = getAuth(app);
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  const todayDate = new Date(new Date().toLocaleDateString("en-CA"));
-  
+
+  const todayDate = new Date().toLocaleDateString("en-CA");
+
   useEffect(() => {
-    console.log("updated 24-05-2024 20:50");
+    console.log("updated 25-05-2024 17:30");
     auth.onAuthStateChanged((user) => {
       if (!user) {
         navigate("/");
@@ -48,7 +47,7 @@ const Home = () => {
             // find the revisions
             const q = query(
               collection(db, "users", docSnapshot.docs[0].id, "revisions"),
-              where("dateRevision", "==", todayDate)
+              where("dateRevisions", "array-contains", todayDate)
             );
             onSnapshot(q, (querySnapshot) => {
               const arr = [];

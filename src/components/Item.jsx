@@ -7,9 +7,7 @@ const Item = ({ item }) => {
       <div>Subject: {item.subject}</div>
       <div>Topic: {item.topic}</div>
       <div>Note/Link: {item.note}</div>
-      <div>
-        Date Created: {item.dateCreated.toDate().toLocaleDateString("en-IN")}
-      </div>
+      <div>Date Created: {item.dateCreated}</div>
     </div>
   );
 };
