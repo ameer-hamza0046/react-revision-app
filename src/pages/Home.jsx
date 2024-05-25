@@ -9,12 +9,12 @@ import {
   collection,
   getDocs,
   onSnapshot,
-  orderBy,
   query,
   where,
 } from "firebase/firestore";
 import Item from "../components/Item";
 import MySpinner from "../components/MySpinner";
+import { Col, Container, Row } from "react-bootstrap";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Home = () => {
   const todayDate = new Date().toLocaleDateString("en-CA");
 
   useEffect(() => {
-    console.log("updated 25-05-2024 17:30");
+    console.log("updated 25-05-2024 18:00");
     auth.onAuthStateChanged((user) => {
       if (!user) {
         navigate("/");
@@ -70,7 +70,13 @@ const Home = () => {
       {loading ? (
         <MySpinner />
       ) : (
-        items.map((item, index) => <Item item={item} key={index} />)
+        <Row xs={1} md={2} lg={3} className="g-4 mx-1">
+          {items.map((item, index) => (
+            <Col key={index}>
+              <Item item={item} />
+            </Col>
+          ))}
+        </Row>
       )}
     </>
   );

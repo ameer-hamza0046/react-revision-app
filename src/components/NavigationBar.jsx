@@ -9,7 +9,7 @@ function NavigationBar() {
   const navigate = useNavigate();
   const auth = getAuth(app);
   return (
-    <Navbar expand="md" bg="dark" data-bs-theme="dark">
+    <Navbar expand="md" bg="dark" data-bs-theme="dark" className="mb-3">
       <Container>
         <Navbar.Brand href="#home">Revision App</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

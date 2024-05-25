@@ -1,14 +1,24 @@
 import React from "react";
+import { Card, Form } from "react-bootstrap";
 
 const Item = ({ item }) => {
   return (
-    <div className="m-3 p-2 border border-dark">
-      <div>Iteration: {item.revisionIteration}</div>
-      <div>Subject: {item.subject}</div>
-      <div>Topic: {item.topic}</div>
-      <div>Note/Link: {item.note}</div>
-      <div>Date Created: {item.dateCreated}</div>
-    </div>
+    <Card>
+      <Card.Body>
+        <Card.Title>{item.subject}</Card.Title>
+        <Card.Subtitle className="text-muted">{item.topic}</Card.Subtitle>
+        <Card.Subtitle className="text-muted">
+          Date Created: {item.dateCreated}
+        </Card.Subtitle>
+        <Card.Subtitle className="mb-2 text-muted">
+          Iteration:{" "}
+          {item.dateRevisions.findIndex(
+            (e) => e === new Date().toLocaleDateString("en-CA")
+          ) + 1}
+        </Card.Subtitle>
+        <Form.Control as="textarea" readOnly rows={3} value={item.note} />
+      </Card.Body>
+    </Card>
   );
 };
 

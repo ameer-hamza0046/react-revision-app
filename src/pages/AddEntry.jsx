@@ -155,7 +155,7 @@ const AddEntry = () => {
   return (
     <>
       <NavigationBar />
-      <Container className="mt-3">
+      <Container>
         {loading ? (
           <MySpinner />
         ) : (
